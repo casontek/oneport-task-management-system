@@ -4,16 +4,16 @@ const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: [true, 'Username is required'],
-        unique: [true, 'Username taken.']
+        unique: true
     },
     phone: {
         type: String,
         required: [true, 'Phone Number is required.'],
-        unique: [true, 'Phone already exist.']
+        unique: true
     },
     email: {
         type: String,
-        unique: [true, 'Eamil address already exist.']
+        unique: true
     },
     password: {
         type: String,
@@ -34,4 +34,4 @@ userSchema.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

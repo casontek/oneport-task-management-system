@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Task = require('../models/task');
 const asyncHandler = require('express-async-handler');
+const authenticationHandler = require('../middlewares/authHandler');
+
+//adds authentication protection to task endpoints
+router.use(authenticationHandler);
 
 //creates task
 router.route("/").post(asyncHandler(
@@ -40,6 +44,7 @@ router.route("/:taskId").put(asyncHandler(
 
 //get a particular task
 router.route("/:taskId").get(async (req, res, next) => {
+    console.log('tring to fetch task by id.');
     try {
         let taskId = req.params.taskId;
         //gets task by id
