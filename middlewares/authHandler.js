@@ -13,6 +13,8 @@ const authenticationHandler = (req, res, next) => {
         req.username = decoded.username;
         req.id = decoded.id;
 
+        console.log(`Username: ${decoded.username}, id: ${decoded.id}`);
+
         next();
     } 
     catch (error) {

@@ -3,6 +3,7 @@ const router = express.Router();
 const Task = require('../models/task');
 const asyncHandler = require('express-async-handler');
 const authenticationHandler = require('../middlewares/authHandler');
+const rabbitMQProducer = require('../utils/rabbitMQProducer');
 
 //adds authentication protection to task endpoints
 router.use(authenticationHandler);
@@ -13,6 +14,16 @@ router.route("/").post(asyncHandler(
         const taskObject = req.body;
         //add new task to database
         let task = await Task.create(taskObject);
+
+        let taskMessage = {
+            'title': task.title,
+            'id': task.taskId,
+            'message': 'task created.',
+            'username': req.username
+        }
+
+        //produce message
+        publishMessage(taskMessage);
 
         res.json({
             code: 200,
@@ -33,6 +44,15 @@ router.route("/:taskId").put(asyncHandler(
             task,
             {"new": true}
         );
+
+        let taskMessage = {
+            'title': task.title,
+            'id': task.taskId,
+            'username': req.username,
+            'message': 'task updated.'
+        }
+        //produce message
+        publishMessage(taskMessage);
 
         res.json({
             code: 200,
@@ -72,6 +92,15 @@ router.route("/:taskId").delete(async (req, res, next) => {
         let taskId = req.params.taskId;
         let result = await Task.findByIdAndDelete(taskId);
 
+        let taskMessage = {
+            'title': result.title,
+            'id': result.taskId,
+            'username': req.username,
+            'message': 'task deleted.'
+        }
+        //produce message
+        publishMessage(taskMessage);
+
         if(result) {
             res.json({
                 code: 200,
@@ -92,6 +121,14 @@ const errorObject = (code, message) => {
     error.code = code;
 
     return error;
+}
+
+const publishMessage = (taskMessage) => {
+    rabbitMQProducer(
+        taskMessage, 
+        "task_exchange", 
+        "task_queue"
+    );
 }
 
 module.exports = router;
