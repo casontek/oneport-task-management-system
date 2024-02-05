@@ -1,8 +1,27 @@
 
 const errorHandler = (err, req, res, next) => {
-    const errorMessage = err.message;
-    const statusCode = typeof err.code !== 'undefined' ? err.code :
-        err.name === "ValidationError" ? 400 : 500;
+    let errorMessage = err.message;
+    let statusCode = typeof err.code !== 'undefined' ? err.code :
+    err.name === "ValidationError" ? 400 : 500;
+    
+    if (err.message && err.message.includes('duplicate key error')) {
+        statusCode = 409;
+        let filteredMessage = errorMessage.split("key: ")[1].replace("{","")
+            .replace("}","").replaceAll("\"","");
+        let key = filteredMessage.split(":")[0].trim();
+        let value = filteredMessage.split(":")[1].trim();
+        if(key === "phone"){
+            key = "Phone number";
+        }
+        else if(key == "email") {
+            key = "Email address";
+        }
+        else {
+            key = capitalizeFirstLetter(key);
+        }
+
+        errorMessage = `${key} ${value} already exist`;
+    }
 
     res.json({
         code: statusCode,
@@ -15,6 +34,10 @@ const pathHandler = (req, res, next) => {
         message: `Path ${req.path}, not found.`
     });
     next();
+}
+
+const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 module.exports = {
