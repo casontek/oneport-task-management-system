@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/task');
+const errorObject = require('../utils/error');
 const asyncHandler = require('express-async-handler');
 const authenticationHandler = require('../middlewares/authHandler');
 const rabbitMQProducer = require('../utils/rabbitMQProducer');
@@ -116,12 +117,6 @@ router.route("/:taskId").delete(async (req, res, next) => {
     }
 });
 
-const errorObject = (code, message) => {
-    const error = new Error(message);
-    error.code = code;
-
-    return error;
-}
 
 const publishMessage = (taskMessage) => {
     rabbitMQProducer(

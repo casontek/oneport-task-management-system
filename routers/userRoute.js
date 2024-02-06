@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const errorObject = require('../utils/error');
 const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
@@ -69,12 +70,5 @@ router.post("/login", async (req, res, next) => {
     }
 });
 
-
-const errorObject = (code, message) => {
-    const error = new Error(message);
-    error.code = code;
-
-    return error;
-}
 
 module.exports = router;
