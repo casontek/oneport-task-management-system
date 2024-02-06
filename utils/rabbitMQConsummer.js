@@ -1,4 +1,3 @@
-const amqp = require('amqplib');
 const logger = require('./logger');
 const rabbitMQConnection = require('../configs/rabbit_connection');
 
@@ -21,7 +20,7 @@ const rabbitMQConsummer = async (exchange, taskQueue, onTaskReceived) => {
             try {
               await onTaskReceived(task);
 
-              logger.log(`Task processed: ${JSON.stringify(task)}`);
+              logger.info(`Task processed: ${JSON.stringify(task)}`);
               channel.ack(message);
             } 
             catch (error) {

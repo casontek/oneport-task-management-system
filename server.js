@@ -37,6 +37,5 @@ app.use(pathHandler);
 
 //starts the server
 app.listen(port, () => {
-    //console.log(`server started at port ${port}`);
-    logger.log(`server started at port ${port}`);
+    logger.info(`server started at port ${port}`);
 });
