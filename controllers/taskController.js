@@ -3,9 +3,7 @@ const errorObject = require('../utils/error');
 const asyncHandler = require('express-async-handler');
 const rabbitMQProducer = require('../utils/rabbitMQProducer');
 
-//@desc Creates Task
-//@route POST /api/task
-//@access private
+//add new task
 const createTask = asyncHandler(
     async (req, res) => {
         const taskObject = req.body;
@@ -30,9 +28,7 @@ const createTask = asyncHandler(
     }
 );
 
-//@desc update an existing Task
-//@route PUT /api/task/:taskId
-//@access private
+//updates an existing task
 const updateTask = asyncHandler(
     async (req, res) => {
         let taskId = req.params.taskId;
@@ -61,9 +57,7 @@ const updateTask = asyncHandler(
     }
 );
 
-//@desc fetch Task using taskId
-//@route GET /api/task/:taskId
-//@access private
+//fetch task by id
 const fetchTask = async (req, res, next) => {
     try {
         let taskId = req.params.taskId;
@@ -86,9 +80,7 @@ const fetchTask = async (req, res, next) => {
     }
 };
 
-//@desc fetch Task by taskId
-//@route DELETE /api/task/:taskId
-//@access private
+//delete particular Task by taskId
 const deleteTask = async (req, res, next) => {
     try {
         let taskId = req.params.taskId;

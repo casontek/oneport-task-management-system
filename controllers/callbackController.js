@@ -3,10 +3,7 @@ const logger = require('../utils/logger');
 const Subscription = require('../models/subscription');
 const asyncHandler = require('express-async-handler');
 
-
-//@desc create new callback url
-//@route GET /api/webhook?callback
-//@access private
+//add news callback url
 const registerNewCallback = asyncHandler(
     async (req, res) => {
         const callbackUrl = req.query.callback;
@@ -24,16 +21,14 @@ const registerNewCallback = asyncHandler(
     }
 );
 
-//@desc create new callback url
-//@route DELETE /api/webhook
-//@access private
+//delete an existing callback
 const deleteCallbackUrl = async (req, res, next) => {
     const username = req.username;
     try {
         let result = await Subscription.findOneAndDelete({'username': username});
 
         if(!result) {
-            throw errorObject(400, "No existing callback url.");
+            throw errorObject(404, "No existing callback url.");
         }
 
         res.json({

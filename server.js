@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+const path = require('path');
 const logger = require('./utils/logger');
 const axios = require('axios').default;
 const port = process.env.PORT || 7000
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use("/api/task", taskRoute);
 app.use("/api/user", userRoute);
 app.use("/api/webhook", webhookRoute);
+app.use('/api/doc', express.static(path.join(__dirname, 'apidoc')));
 app.use(errorHandler);
 app.use(pathHandler);
 

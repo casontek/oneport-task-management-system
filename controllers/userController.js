@@ -5,9 +5,7 @@ const logger = require('../utils/logger');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
-//@desc Creates User profile
-//@route POST /api/user/register
-//@access private
+//creates new user profile
 const createUserProfile = asyncHandler(async (req, res) => {
     const {username, password, email, phone} = req.body;
     //encrypt password before saving
@@ -32,9 +30,7 @@ const createUserProfile = asyncHandler(async (req, res) => {
 
 });
 
-//@desc login User into the system
-//@route POST /api/user/login
-//@access private
+//login user to obtain access token
 const userLogin = async (req, res, next) => {
     const {username, password} = req.body;
     try {
@@ -42,12 +38,12 @@ const userLogin = async (req, res, next) => {
         let user = await User.findOne({'username': username});
         //checks if user exist
         if(!user) {
-            throw errorObject(400, 'User not found.');
+            throw errorObject(404, 'User not found.');
         }
         //validates user password
         let validLogin = await bcrypt.compare(password, user.password);
         if(!validLogin) {
-            throw errorObject(400, 'Username or password not correct.')
+            throw errorObject(401, 'Username or password not correct.')
         }
 
         //process user login access token

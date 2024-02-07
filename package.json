@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "amqplib": "^0.10.3",
+    "apidoc": "^1.2.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.1",

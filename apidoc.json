@@ -1,0 +1,11 @@
+{
+    "name": "Task Management API docs",
+    "version": "1.0.0",
+    "description": "API documentation for task management system endpoints.",
+    "title": "Task management docs",
+    "url" : "https://localhost:7000",
+    "ignore": [
+      "**/node_modules/**"
+    ]
+  }
+  
