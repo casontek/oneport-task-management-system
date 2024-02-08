@@ -26,6 +26,11 @@ this system provides a streamlined approach to task management.
 6. To run test make sure your environment file is included
 7. Run test : `npm test`
 
+## Build and run with docker
+1. delete the node_module folder if exist on the project directory
+2. docker build `docker built -t task-manager-app`
+3. run app `docker run -p 7000:7000 task-manager-app`
+
 ## Usage
 1. Register a new account or log in with existing credentials.
 2. Create new tasks by providing necessary details such as title, description, tags, etc.
