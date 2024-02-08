@@ -21,7 +21,10 @@ this system provides a streamlined approach to task management.
 1. Clone the repository: `git clone https://github.com/casontek/task-management-system.git`
 2. Install dependencies: `npm install`
 3. Start the server: `npm start`
-4. Access the application via the provided URL (default: `http://localhost:7000`).
+4. Access the application via the provided URL (default: `http://localhost:7000`)
+5. Access the api documentation via (default: `http://localhost:7000/api/doc`).
+6. To run test make sure your environment file is included
+7. Run test : `npm test`
 
 ## Usage
 1. Register a new account or log in with existing credentials.
