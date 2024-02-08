@@ -17,8 +17,10 @@ const createTask = asyncHandler(
             'username': req.username
         }
 
-        //produce message
-        publishMessage(taskMessage);
+        if (process.env.NODE_ENV != 'test') {
+            //produce message
+            publishMessage(taskMessage);
+        }
 
         res.json({
             code: 200,
@@ -34,10 +36,10 @@ const updateTask = asyncHandler(
         let taskId = req.params.taskId;
         let task = req.body;
         //updates the task
-        let updatedTask = await  Task.findByIdAndUpdate(
+        let updatedTask = await Task.findByIdAndUpdate(
             taskId,
             task,
-            {"new": true}
+            { "new": true }
         );
 
         let taskMessage = {
@@ -62,9 +64,9 @@ const fetchTask = async (req, res, next) => {
     try {
         let taskId = req.params.taskId;
         //gets task by id
-        let task = await  Task.findById(taskId);
+        let task = await Task.findById(taskId);
 
-        if(task) {
+        if (task) {
             res.json({
                 code: 200,
                 message: 'success',
@@ -95,7 +97,7 @@ const deleteTask = async (req, res, next) => {
         //produce message
         publishMessage(taskMessage);
 
-        if(result) {
+        if (result) {
             res.json({
                 code: 200,
                 message: `Task with id: ${taskId}, deleted.`
@@ -106,14 +108,14 @@ const deleteTask = async (req, res, next) => {
         }
     }
     catch (error) {
-      next(error);
+        next(error);
     }
 };
 
 const publishMessage = (taskMessage) => {
     rabbitMQProducer(
-        taskMessage, 
-        "task_exchange", 
+        taskMessage,
+        "task_exchange",
         "task_queue"
     );
 }

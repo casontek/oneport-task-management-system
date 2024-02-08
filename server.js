@@ -15,18 +15,21 @@ const rabbitMQConsummer = require('./utils/rabbitMQConsummer');
 const app = express();
 //connects to db
 connectDB();
-//starts listening to rabbitMQ event
-rabbitMQConsummer(
-    "task_exchange", 
-    "task_queue",
-    async (task) => {
-        //process message here
-        let callbackObject = await Subscription.findOne({'username': task.username});
-        //communicate back message
-        let response = await axios.post(callbackObject.callback, task);
 
-        logger.log(`++++++++++++++++++++++++++ Message communicated. ${response}`);
-});
+if(process.env.NODE_ENV != 'test') {
+    //starts listening to rabbitMQ event
+    rabbitMQConsummer(
+        "task_exchange", 
+        "task_queue",
+        async (task) => {
+            //process message here
+            let callbackObject = await Subscription.findOne({'username': task.username});
+            //communicate back message
+            let response = await axios.post(callbackObject.callback, task);
+
+            logger.log(`++++++++++++++++++++++++++ Message communicated. ${response}`);
+    });
+}
 
 //binds app middlewares
 app.use(express.json());
@@ -41,3 +44,5 @@ app.use(pathHandler);
 app.listen(port, () => {
     logger.info(`server started at port ${port}`);
 });
+
+module.exports = app;
